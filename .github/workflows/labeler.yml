@@ -11,9 +11,18 @@ jobs:
       - uses: ./
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          xs_max_size: '10'
-          s_max_size: '40'
-          m_max_size: '85'
-          l_max_size: '150'
-          fail_if_xl: 'true'
-          message_if_xl: 'This PR is sooooo big!! 😳'
+          thresholds: |
+            xs:
+              less_than: 20
+              label: tiny
+            s:
+              less_than: 200
+              label: small
+            m:
+              less_than: 500
+              label: medium
+            l:
+              less_than: 1000
+              label: large
+            fail_if_xl: true
+            message_if_xl: This PR is sooooo big!! 😳
