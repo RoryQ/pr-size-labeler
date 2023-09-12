@@ -4,7 +4,7 @@ GitHub Action to label Pull Requests according to the number of modified lines.
 
 ## Features
 
-- `diffstat -m` based calculation that only counts modified lines, instead of double counting additions and deletions.
+- [`diffstat -m`](https://man.archlinux.org/man/diffstat.1#m) based calculation that only counts modified lines, instead of double counting additions and deletions.
 - Configurable thresholds for each label (XS, S, M, L).
 - Configurable labels for each threshold.
 - Exclude paths from calculation.
