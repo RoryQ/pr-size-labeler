@@ -1,15 +1,15 @@
 name: 'PRs Size Labeler'
-description: 'Sample GitHub Action written in Go to visualize and optionally limit the size of your pull requests'
+description: 'GitHub Action to label Pull Requests based on size '
 inputs:
   github_token:
     description: 'GitHub token'
     required: true
   thresholds:
-    description: 'Fail if the PR size is XL'
+    description: 'Set the size thresholds or labels to apply.'
     required: false
     default: ''
   exclude_paths:
-    description: 'Comment added if the PR size is XL'
+    description: 'Glob filepaths to exclude from size calcuation.'
     required: false
     default: ''
 runs:
