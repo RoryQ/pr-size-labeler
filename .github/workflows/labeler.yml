@@ -7,8 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Label the PR size
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: ./
+        name: Run Action
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           thresholds: |
@@ -25,4 +28,7 @@ jobs:
               less_than: 1000
               label: large
             fail_if_xl: true
-            message_if_xl: This PR is sooooo big!! 😳
+            message_if_xl: The PR size is XL
+          exclude_paths: |
+            - go.mod
+            - go.sum

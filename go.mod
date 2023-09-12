@@ -3,6 +3,7 @@ module github.com/friendsofgo/pr-size-labeler
 go 1.21
 
 require (
+	github.com/bmatcuk/doublestar/v4 v4.6.0
 	github.com/google/go-github/v31 v31.0.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kr/pretty v0.2.0

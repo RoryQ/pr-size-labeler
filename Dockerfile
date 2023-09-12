@@ -1,5 +1,5 @@
-FROM golang:1.21-alpine
-RUN apk add git
+FROM golang:1.21
+RUN apt-get update && apt-get install -y git diffstat
 
 COPY . /home/src
 WORKDIR /home/src
