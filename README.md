@@ -1,25 +1,21 @@
 # Pull Request Size Labeler
 
-Sample GitHub Action written in Go to visualize and optionally limit the size of your pull requests.
+GitHub Action to label Pull Requests according to the number of modified lines.
 
-Developed for fun and learn. 
-Heavily inspired on [codelytv/pr-size-labeler](https://github.com/CodelyTV/pr-size-labeler).
+## Features
 
-**All credits for the original authors&trade;**
-
-[![Status](https://github.com/friendsofgo/pr-size-labeler/workflows/labeler/badge.svg)](https://github.com/friendsofgo/pr-size-labeler)
-[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/friendsofgo/pr-size-labeler)](https://golang.org/doc/go1.15)
-[![Version](https://img.shields.io/github/release/friendsofgo/pr-size-labeler.svg?style=flat-square)](https://github.com/friendsofgo/pr-size-labeler/releases/latest)
-[![Go Report Card](https://goreportcard.com/badge/github.com/friendsofgo/pr-size-labeler)](https://goreportcard.com/report/github.com/friendsofgo/pr-size-labeler)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/friendsofgo/pr-size-labeler.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/friendsofgo/pr-size-labeler/alerts/)
-[![FriendsOfGo](https://img.shields.io/badge/powered%20by-Friends%20of%20Go-73D7E2.svg)](https://friendsofgo.tech)
+- `diffstat -m` based calculation that only counts modified lines, instead of double counting additions and deletions.
+- Configurable thresholds for each label (XS, S, M, L).
+- Configurable labels for each threshold.
+- Exclude paths from calculation.
+- Optionally fail and comment when a PR exceeds the largest threshold.
 
 ## Usage
 
-Create a file named `labeler.yml` inside the `.github/workflows` directory and paste:
+Create a file named `pr-size-labeler.yml` inside the `.github/workflows` directory, then modify and use the following config:
 
 ```yml
-name: labeler
+name: pr-size-labeler
 
 on: [pull_request]
 
@@ -28,17 +24,28 @@ jobs:
     runs-on: ubuntu-latest
     name: Label the PR size
     steps:
-      - uses: friendsofgo/pr-size-labeler@v1.0
+      - uses: RoryQ/pr-size-labeler@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          xs_max_size: '10'
-          s_max_size: '100'
-          m_max_size: '500'
-          l_max_size: '1000'
-          fail_if_xl: 'false'
-          message_if_xl: 'This PR is so big! Please, split it 😊'
+          # Thresholds or labels can be overridden. These values are the defaults so can be omitted
+          thresholds: |
+            xs:
+              less_than: 10
+              label: size/xs
+            s:
+              less_than: 100
+              label: size/s
+            m:
+              less_than: 500
+              label: size/m
+            l:
+              less_than: 1000
+              label: size/l
+            # Set to true if an XL should fail the PR
+            fail_if_xl: false
+            message_if_xl: This PR is too big. Please, split it.
+          # List the filepaths to exclude like below. Supports globs. Default is empty.
+          exclude_paths: |
+            - go.mod
+            - go.sum
 ```
-
-> If you want, you can customize all `*_max_size` with the size that fits in your project.
-
-> By setting `fail_if_xl` to `'true'` you'll make fail all pull requests bigger than `l_max_size`.
